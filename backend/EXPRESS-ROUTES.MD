@@ -5,7 +5,7 @@ Express.js is a popular web application framework for Node.js designed for build
 ### Basic Route Handling
 
 ```javascript
-const express = require('express');
+const express = require('express'); 
 const app = express();
 
 // Respond to GET request on the root

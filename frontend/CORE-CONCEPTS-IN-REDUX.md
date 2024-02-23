@@ -1,177 +1,107 @@
-## Redux Core Concepts
+# Redux Core Concepts
 
-This cheat sheet explains the core concepts of Redux using a simple application state management example, which simulates managing supplies, distance, days, and cash for a wagon journey.
+Redux is a predictable state container for JavaScript apps, often used with React but compatible with other frameworks. It helps manage the state of your application in a predictable way. This cheat sheet covers the core concepts of Redux including actions, reducers, and the store, along with basic usage examples.
 
-### Initial State
+## 1. Actions
 
-- **Define the initial state** of your application:
-
-  ```javascript
-  const initialWagonState = {
-    supplies: 100,
-    distance: 0,
-    days: 0,
-    cash: 200,
-  };
-  ```
-
-### Actions
-
-- **Actions** are JavaScript objects that send data from your application to your store. They must have a `type` property.
-- Example actions for the wagon journey:
-
-  ```javascript
-  { type: "gather" }
-  { type: "travel", payload: 1 } // days to travel
-  { type: "tippedWagon" }
-  { type: "sell" }
-  { type: "buy" }
-  { type: "theft" }
-  ```
-
-### Reducers
-
-- **Reducers** specify how the application's state changes in response to actions sent to the store.
-- Implement the reducer function:
-
-  ```javascript
-  reducer = (state = initialWagonState, action) => {
-    switch (action.type) {
-      case "gather":
-        return {...state, supplies: state.supplies + 15, days: state.days + 1};
-      case "travel":
-        if (state.supplies - 20 * action.payload < 0) return state;
-        return {...state, supplies: state.supplies - 20 * action.payload, distance: state.distance + 10 * action.payload, days: state.days + action.payload};
-      case "tippedWagon":
-        return {...state, supplies: state.supplies - 30, days: state.days + 1};
-      case "sell":
-        if (state.supplies - 20 < 0) return state;
-        return {...state, supplies: state.supplies - 20, cash: state.cash + 5};
-      case "buy":
-        if (state.cash - 15 < 0) return state;
-        return {...state, supplies: state.supplies + 25, cash: state.cash - 15};
-      case "theft":
-        return {...state, cash: state.cash / 2};
-      default:
-        return state;
-    }
-  };
-  ```
-
-### Dispatching Actions
-
-- **Dispatching actions** to update the state:
-  ```javascript
-  let wagon = reducer(undefined, {});
-  wagon = reducer(wagon, { type: "travel", payload: 1 });
-  wagon = reducer(wagon, { type: "gather" });
-  // Repeat for other actions
-  ```
-
-### Key Concepts
-
-- **Action Types:** Unique constants or strings that identify the action being performed.
-- **Payload:** Additional information that may be needed to perform the action.
-- **State Immutability:** When changing the state, you should return a new object rather than modifying the existing state.
-- **Reducers are Pure Functions:** Given the same arguments, should return the exact same state without side effects.
-
-### Best Practices
-
-- **Action Creators:** Write functions that create action objects to standardize and simplify action creation.
-- **Splitting Reducers:** For larger applications, split reducers into smaller functions that manage specific parts of the state, then combine them.
-- **Immutable Update Patterns:** Use spread syntax (`...state`) or utilities like Immer for complex state updates to avoid direct state mutation.
-
-## Example
+Actions are plain JavaScript objects that represent an intention to change the state. They are the only way to send data from your application to your Redux store. Actions must have a `type` property that indicates the type of action being performed.
 
 ```javascript
-const initialWagonState = {
-  suplies: 100,
-  distance: 0,
-  days: 0,
-  cash: 200,
-};
-reducer = (state = initialWagonState, action) => {
+// Action Type
+const ADD_TODO = 'ADD_TODO';
+
+// Action Creator
+function addTodo(text) {
+  return {
+    type: ADD_TODO,
+    text
+  };
+}
+```
+
+## 2. Reducers
+
+Reducers specify how the application's state changes in response to actions sent to the store. Remember that actions only describe what happened, but don't describe how the application's state changes.
+
+```javascript
+function todoReducer(state = [], action) {
   switch (action.type) {
-    case "gather":
-      return {
+    case 'ADD_TODO':
+      return [
         ...state,
-        suplies: state.suplies + 15,
-        days: state.days + 1,
-      };
-    case "travel":
-      const daysToTravel = action.payload;
-      if (state.suplies - 20 * action.payload < 0) {
-        return state;
-      } else {
-        return {
-          ...state,
-          suplies: state.suplies - 20 * daysToTravel,
-          distance: state.distance + 10 * daysToTravel,
-          days: state.days + daysToTravel,
-        };
-      }
-
-    case "tippedWagon":
-      return {
-        ...state,
-        suplies: state.suplies - 30,
-        days: state.days + 1,
-      };
-    case "sell":
-      if (state.suplies - 20 < 0) {
-        return state;
-      } else {
-        return {
-          ...state,
-          suplies: state.suplies - 20,
-          cash: state.cash + 5,
-        };
-      }
-    case "buy":
-      if (state.cash - 15 < 0) {
-        return state;
-      } else {
-        return {
-          ...state,
-          suplies: state.suplies + 25,
-          cash: state.cash - 15,
-        };
-      }
-    case "theft":
-      return {
-        ...state,
-        cash: state.cash / 2,
-      };
-    default: {
+        {
+          text: action.text,
+          completed: false
+        }
+      ];
+    default:
       return state;
-    }
   }
-};
-let wagon = reducer(undefined, {});
-console.log(wagon);
-wagon = reducer(wagon, { type: "travel", payload: 1 });
-console.log(wagon);
-wagon = reducer(wagon, { type: "gather" });
-console.log(wagon);
-wagon = reducer(wagon, { type: "tippedWagon" });
-console.log(wagon);
-wagon = reducer(wagon, { type: "travel", payload: 3 });
-console.log(wagon);
-wagon = reducer(wagon, { type: "theft", payload: 3 });
-console.log(wagon);
-wagon = reducer(wagon, { type: "buy", payload: 3 });
-console.log(wagon);
-wagon = reducer(wagon, { type: "buy", payload: 3 });
-console.log(wagon);
-wagon = reducer(wagon, { type: "buy", payload: 3 });
-console.log(wagon);
-wagon = reducer(wagon, { type: "buy", payload: 3 });
-console.log(wagon);
-wagon = reducer(wagon, { type: "buy", payload: 3 });
-console.log(wagon);
-wagon = reducer(wagon, { type: "buy", payload: 3 });
-console.log(wagon);
-wagon = reducer(wagon, { type: "buy", payload: 3 });
-console.log(wagon);
+}
+```
 
+## 3. Store
+
+The store brings actions and reducers together. It holds the application state, allows access to the state via `getState()`, allows state to be updated via `dispatch(action)`, and registers listeners via `subscribe(listener)`.
+
+```javascript
+import { createStore } from 'redux';
+let store = createStore(todoReducer);
+```
+
+## 4. Dispatching Actions
+
+Dispatching an action is the process of sending out an action to trigger a state change. 
+
+```javascript
+store.dispatch(addTodo('Learn Redux'));
+```
+
+## 5. Subscribing to the Store
+
+You can subscribe to the store to get notified of state changes.
+
+```javascript
+store.subscribe(() => console.log(store.getState()));
+```
+
+## 6. Combining Multiple Reducers
+
+When your app grows, you'll want to split your reducing function into separate functions, each managing independent parts of the state.
+
+```javascript
+import { combineReducers } from 'redux';
+
+const rootReducer = combineReducers({
+  todos: todoReducer,
+  visibilityFilter: visibilityFilterReducer
+});
+
+let store = createStore(rootReducer);
+```
+
+## 7. Async Actions with Redux Thunk
+
+Redux Thunk middleware allows you to write action creators that return a function instead of an action.
+
+```javascript
+function fetchTodos() {
+  return function(dispatch) {
+    return fetch('/todos')
+      .then(response => response.json())
+      .then(json => dispatch(addTodo(json.text)));
+  };
+}
+```
+
+To use Redux Thunk, apply the middleware to the Redux store.
+
+```javascript
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+
+let store = createStore(
+  rootReducer,
+  applyMiddleware(thunk)
+);
 ```

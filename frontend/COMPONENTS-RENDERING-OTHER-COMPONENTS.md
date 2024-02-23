@@ -92,5 +92,3 @@ function WelcomeDialog() {
 - **Specialization Is Key**: Create specialized components that render more generic components with specific props for a more precise UI.
 - **Maintain a Clear Component Hierarchy**: Keep the component structure clear and understandable, avoiding unnecessary nesting or complexity.
 - **Keep Components Small and Focused**: Adhere to the principle of single responsibility by ensuring components are small, focused, and do one thing well.
-
-Component composition is a fundamental concept in React that encourages the development of well-structured, maintainable, and scalable applications. By understanding and applying these principles, developers can create complex UIs that are composed of simple, reusable components.

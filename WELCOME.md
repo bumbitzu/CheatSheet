@@ -1,4 +1,4 @@
-## Welcome to the DevCheatSheet!
+# Welcome to the DevCheatSheet!
 
 Welcome to our site, a dedicated resource for programmers of all levels looking for concise and reliable cheatsheets for a wide variety of programming languages and environments. Whether you're new to programming or an experienced developer, here you'll find the information you need to streamline and improve your workflow.
 

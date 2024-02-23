@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="index.css" />
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.24.1/themes/prism-tomorrow.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
+  <title>Cheatsheet Univers</title>
+</head>
+<body onload="render()">
+  
+  <nav id="mySidebar" class="sidebar">
+    <div class="input-container">
+    <i class="fas fa-search"></i>
+    <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category">
+    
+  </div>
+      <ul id='myMenu'>
+        <li onclick="render(); clicked(this)">Home</li>
+        <h2>Front-End</h2>
+        <li onclick="render('frontend/NODE-ASSERT-LIBRARY.md'); clicked(this)">Node's Assert Library</li>
+        <li onclick="render('frontend/TESTS-WITH-MOCHA.md'); clicked(this)">Tests with Mocha</li>
+        <li onclick="render('frontend/TEST-DRIVEN-DEVELOPMENT-WITH-MOCHA.md'); clicked(this)">TDD with Mocha<p class="tag">test</p></li>
+        <li onclick="render('frontend/CORE-CONCEPTS-IN-REDUX.md'); clicked(this)">Redux Core Concepts</li>
+        <li onclick="render('frontend/INTRO-TO-THE-CORE-REDUX-API.md'); clicked(this)">Core Redux API</li>
+        <li onclick="render('frontend/COMPLEX-STATE-IN-REDUX.md'); clicked(this)">Complex State in Redux</li>
+        <li onclick="render('frontend/REDUX-TOOLKIT.md'); clicked(this)">Redux Toolkit</li>
+
+        <h2>Back-End</h2>
+        <li onclick="render('backend/NODE-EXPRESS.md'); clicked(this)">Node Express</li>
+        <li onclick="render('backend/EXPRESS-MIDDLEWARE.md'); clicked(this)">Express Middleware</li>
+        <li onclick="render('backend/EXPRESS-ROUTES.md'); clicked(this)">Express Routes</li>
+        <li onclick="render('backend/SESSIONS-COOKIES-VS-LOCALSTORAGE.md'); clicked(this)">Sessions & Cookies vs. localStorage</li>
+        <li onclick="render('backend/EXPRESS-SESSIONS.md'); clicked(this)">Express Sessions</li>
+        <li onclick="render('backend/JSON-WEB-TOKENS-(JWT).md'); clicked(this)">JSON Web Tokens (JWT)</li>
+        <li onclick="render('backend/HASHING-ENCRYPTION-ENCODING-OBFUSCATION.md'); clicked(this)">Hashing, Encryption, Encoding, Obfuscation</li>
+        <li onclick="render('backend/PASSPORT.JS-LOCAL-AUTHENTICATION.md'); clicked(this)">Passport Local Authentication</li>
+        <li onclick="render('backend/BCRYPT-WITH-EXPRESS.md'); clicked(this)">Bcrypt</li>
+      </ul>
+
+  </nav>
+  
+  <main id="main">
+    <button class="openbtn" id="openbtn" onclick="openCloseNav()">☰ Show Menu</button>
+    <div id="markdownContent"></div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.1/prism.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>

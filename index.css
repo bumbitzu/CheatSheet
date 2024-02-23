@@ -1,0 +1,178 @@
+
+:root {
+  --primary: #212121ff;
+  --border: #383838ff;
+  --placeholder: #8f8f8fff;
+  --secundary:#171717ff;
+}
+body{
+  background-color: var(--primary);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+h1{
+  font-size: 4rem;
+  color: white;
+  width: fit-content;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+.sidebar {
+  height: 100%;
+  width: 0px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: var(--secundary);
+  overflow-x: hidden;
+  transition: 0.5s;
+
+}
+.sidebar ul{
+  list-style-type: none;
+  padding-left: 0;
+}
+.sidebar h2{
+  position: relative;
+  color: #acacac;
+  display: block;
+  transition: 0.3s;
+  line-height: 5px;
+  margin-left: 20px;
+
+}
+.sidebar li {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  position: relative;
+  text-decoration: none;
+  font-size: 15px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+  width: 100%;
+  padding-left: 40px;
+}
+
+
+.sidebar li:hover {
+  color: #f1f1f1 !important;
+  cursor: pointer !important;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 0px;
+  font-size: 36px;
+}
+
+.openbtn {
+  font-size: 1.2rem;
+  cursor: pointer;
+  background-color: var(--secundary);
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.openbtn:hover {
+  background-color: #2e2e2eff;
+
+}
+
+#main {
+  transition: margin-left .5s;
+  padding: 60px;
+  padding-top: 0;
+}
+#mySearch {
+  
+  margin: 0 auto;
+  position: relative;
+  width: 350px;
+  padding-right: 0.75rem;
+  padding-left: 3rem;
+  padding-bottom: 1.0rem;
+  padding-top: 1.0rem;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  background-color: var(--primary);
+  outline-width: 0;
+  border-color: var(--border);
+  border-width: 1px;
+
+  color: white;
+}
+#mySearch::placeholder{
+  color: var(--placeholder);
+}
+#mySearch:focus{
+  outline: none;
+}
+#markdownContent{
+  color: white;
+  font-size: 20px;
+}
+.input-container {
+  position: relative;
+  display: inline-block;
+}
+
+.input-container input {
+  padding-right: 30px; /* Lasă spațiu pentru pictogramă */
+}
+
+.input-container i {
+  z-index: 100;
+  font-size: 20px;
+  position: absolute;
+  top: 20px;
+  left: 15px; /* Ajustează poziția conform nevoilor */
+  pointer-events: none; /* Face pictograma neinteractivă */
+  color: var(--placeholder);
+}
+.codeHead{
+  background-color: var(--secundary);
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.copy{
+  font-size: 15px;
+  padding-left: 15px;
+}
+.copy i{
+  font-size: 20px;
+  padding-right: 10px ;
+  cursor: pointer;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+
+}
+
+th, td {
+  border: 1px solid var(--border);
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  background-color: var(--secundary);
+}
+.tag{
+
+  display: none;
+}
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidebar {padding-top: 15px;}
+  .sidebar a {font-size: 18px;}
+}

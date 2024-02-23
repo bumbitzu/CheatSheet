@@ -132,3 +132,5 @@ function MyComponent() {
   return <div>Query Param Value: {queryParams.myParam}</div>;
 }
 ```
+
+This cheat sheet provides a quick overview to get started with React Router v6, including common patterns and hooks for routing, navigation, and parameter handling in your React applications. React Router's flexible and declarative approach to routing makes it an indispensable part of the React ecosystem.

@@ -1,213 +1,69 @@
-## 👩🏻‍🏫Managing Complex State in Redux
+## Managing Complex State in Redux
 
-Managing state in a complex Redux application requires careful design to ensure that updates are predictable and performance is optimized. Here are several strategies to handle complex state:
+Redux is designed to manage the global state of a JavaScript application in a single immutable state tree. However, as applications grow in complexity, so does the state structure. This cheat sheet provides strategies and tips for managing complex state structures in Redux effectively.
 
-### 1. Utilizing `action.payload`
-- **Purpose**: `action.payload` carries additional data necessary for the reducer to update the state.
-- **Convention**: The term `payload` is a convention; its content can vary based on the action's requirements.
+### 1. Normalizing State Shape
+
+The key to managing complex and deeply nested state is to normalize your state shape, similar to how you would structure a database. 
+
+- **Use a flat state structure**: Avoid deeply nested data in your Redux store. Flatten data structures as much as possible.
+- **Entities should not be nested within other entities**: Each type of data should have its own "table" in the state, and they should be related by IDs.
 - **Example**:
   ```javascript
-  const addAction = {
-    type: 'ADD_ITEM',
-    payload: { id: 1, name: 'Redux' }
-  };
+  {
+    entities: {
+      users: {
+        byId: {
+          1: { id: 1, name: 'John Doe', posts: [1, 2] },
+          2: { id: 2, name: 'Jane Doe', posts: [3] },
+        },
+        allIds: [1, 2]
+      },
+      posts: {
+        byId: {
+          1: { id: 1, content: 'Hello World', author: 1 },
+          2: { id: 2, content: 'Redux is great', author: 1 },
+          3: { id: 3, content: 'Normalize your state', author: 2 },
+        },
+        allIds: [1, 2, 3]
+      }
+    }
+  }
   ```
 
-### 2. Immutable State Updates
-- **Techniques**: Use the spread syntax (`...`) and array methods like `.map()`, `.slice()`, and `.filter()` to update the state without mutating it.
+### 2. Using Selector Functions
+
+Selectors are functions that take Redux state as an argument and return some data to pass to the component. For complex state structures, selectors can compute derived data, allowing Redux to store the minimal possible state.
+
+- **Selectors can compute derived data**: This helps avoid duplicating data in the state.
+- **Selectors can encapsulate state shape**: This allows changing the state structure without having to update components that rely on this data.
 - **Example**:
   ```javascript
-  // Updating an item in an array
-  const updatedItems = state.items.map(item =>
-    item.id === action.payload.id ? { ...item, ...action.payload } : item
-  );
+  const getPostsByUser = (state, userId) => 
+    state.entities.users.byId[userId].posts.map(postId => state.entities.posts.byId[postId]);
   ```
 
-### 3. Reducer Composition
-- **Description**: A design pattern where the Redux store is managed by multiple slice reducers.
-- **Functionality**: The root reducer delegates actions to slice reducers, each responsible for updating a specific slice of the state. It then combines these slices into a new state object.
-- **Benefits**: Simplifies state management by dividing the state and logic into manageable segments.
+### 3. Splitting Reducers
 
-### 4. `combineReducers()` Method
-- **Purpose**: Provided by Redux, it combines multiple reducer functions into a single root reducer implementing reducer composition.
-- **Usage**:
-  ```javascript
-  import { combineReducers } from 'redux';
-  const rootReducer = combineReducers({
-    slice1: sliceReducer1,
-    slice2: sliceReducer2,
-    // other slices
-  });
-  ```
+As your state shape becomes more complex, your reducers will also grow. Use `combineReducers` to split reducer logic into separate functions that each manage parts of the state tree.
 
-### 5. Redux Ducks Pattern
-- **Concept**: A pattern where Redux logic for a particular feature (actions, types, reducer) is encapsulated in a single file.
-- **Advantages**: Enhances modularity and makes it easier to manage related logic.
-- **Example Structure**:
-  ```javascript
-  // ducks/myFeature.js
-  // Action Types, Reducers, Action Creators are all in this single file.
-  ```
+- **Each reducer should own a piece of the state**: Divide the state structure into domains, data types, or features.
+- **Reducers can call other reducers**: You can further nest `combineReducers` to manage deeply nested parts of the state.
 
-### Best Practices for Complex State Management
-- **Modularize**: Break down the state and logic into smaller, manageable pieces.
-- **Immutable Updates**: Always update the state immutably to prevent unexpected side effects.
-- **Reducer Composition**: Use reducer composition to delegate responsibility to specific parts of the state.
-- **Use Redux Middleware**: For side effects and asynchronous actions, use middleware like Redux Thunk or Redux Saga.
-- **Normalization**: Consider normalizing state shape for complex data structures to simplify data management and improve performance.
-## 👨🏻‍💻Example
+### 4. Managing Side Effects
 
-Let's create a simple Redux application example that demonstrates managing a complex state using the strategies mentioned. Our application will manage a list of tasks, supporting operations like adding a task, toggling a task's completion status, and filtering tasks.
+For complex applications, managing side effects such as asynchronous data fetching is crucial. Redux middleware like Redux Thunk or Redux Saga can help manage these side effects.
 
-### Setup
+- **Redux Thunk** allows your action creators to return functions instead of actions. These functions can dispatch multiple actions and perform asynchronous tasks.
+- **Redux Saga** takes advantage of ES6 generators to make asynchronous flow easy to read, write, and test.
 
-First, ensure you have Redux installed in your project:
+### 5. Immutable Update Patterns
 
-```bash
-npm install redux
-```
+When updating your state, you must ensure that you are doing so immutably. This means you should never modify the state directly but instead return new objects and arrays that represent the new state.
 
-### Actions
+- **Use spread operators and `Object.assign` for objects**.
+- **Use array methods like `map`, `filter`, and spread operators for arrays**.
 
-Define action types and action creators in `actions.js`:
+### 6. Normalizing Libraries
 
-```javascript
-// actions.js
-
-// Action Types
-export const ADD_TASK = 'ADD_TASK';
-export const TOGGLE_TASK = 'TOGGLE_TASK';
-export const SET_FILTER = 'SET_FILTER';
-
-// Action Creators
-export const addTask = task => ({
-  type: ADD_TASK,
-  payload: task,
-});
-
-export const toggleTask = id => ({
-  type: TOGGLE_TASK,
-  payload: { id },
-});
-
-export const setFilter = filter => ({
-  type: SET_FILTER,
-  payload: { filter },
-});
-```
-
-### Reducers
-
-Using reducer composition, we will have one reducer for the tasks and another for the filter setting. Combine these using `combineReducers()`.
-
-#### Tasks Reducer (`tasksReducer.js`)
-
-```javascript
-import { ADD_TASK, TOGGLE_TASK } from './actions';
-
-const initialState = [];
-
-const tasksReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case ADD_TASK:
-      return [...state, action.payload];
-    case TOGGLE_TASK:
-      return state.map(task =>
-        task.id === action.payload.id ? { ...task, completed: !task.completed } : task
-      );
-    default:
-      return state;
-  }
-};
-
-export default tasksReducer;
-```
-
-#### Filter Reducer (`filterReducer.js`)
-
-```javascript
-import { SET_FILTER } from './actions';
-
-const filterReducer = (state = 'ALL', action) => {
-  switch (action.type) {
-    case SET_FILTER:
-      return action.payload.filter;
-    default:
-      return state;
-  }
-};
-
-export default filterReducer;
-```
-
-#### Combine Reducers (`rootReducer.js`)
-
-```javascript
-import { combineReducers } from 'redux';
-import tasksReducer from './tasksReducer';
-import filterReducer from './filterReducer';
-
-const rootReducer = combineReducers({
-  tasks: tasksReducer,
-  filter: filterReducer,
-});
-
-export default rootReducer;
-```
-
-### Store
-
-Initialize the Redux store in `store.js`:
-
-```javascript
-import { createStore } from 'redux';
-import rootReducer from './rootReducer';
-
-const store = createStore(rootReducer);
-
-export default store;
-```
-
-### Usage Example
-
-Here's how you might use this setup in a component:
-
-```javascript
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { addTask, toggleTask, setFilter } from './actions';
-
-const TasksComponent = () => {
-  const dispatch = useDispatch();
-  const tasks = useSelector(state => state.tasks);
-  const filter = useSelector(state => state.filter);
-
-  const handleAddTask = (name) => {
-    const newTask = { id: Date.now(), name, completed: false };
-    dispatch(addTask(newTask));
-  };
-
-  const handleToggleTask = (id) => {
-    dispatch(toggleTask(id));
-  };
-
-  const handleSetFilter = (filter) => {
-    dispatch(setFilter(filter));
-  };
-
-  // Render tasks based on filter
-  const visibleTasks = tasks.filter(task => {
-    if (filter === 'COMPLETED') return task.completed;
-    if (filter === 'ACTIVE') return !task.completed;
-    return true;
-  });
-
-  return (
-    <div>
-      {/* Task list, add task form, filter buttons */}
-    </div>
-  );
-};
-
-export default TasksComponent;
-```
+Consider using libraries like Normalizr to normalize the state shape automatically. These libraries help in defining a schema for your data and ensure that the state structure remains consistent and easy to manage.

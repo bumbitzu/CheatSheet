@@ -1,8 +1,8 @@
-# Redux Core Concepts
+## Redux Core Concepts
 
 Redux is a predictable state container for JavaScript apps, often used with React but compatible with other frameworks. It helps manage the state of your application in a predictable way. This cheat sheet covers the core concepts of Redux including actions, reducers, and the store, along with basic usage examples.
 
-## 1. Actions
+### 1. Actions
 
 Actions are plain JavaScript objects that represent an intention to change the state. They are the only way to send data from your application to your Redux store. Actions must have a `type` property that indicates the type of action being performed.
 
@@ -19,7 +19,7 @@ function addTodo(text) {
 }
 ```
 
-## 2. Reducers
+### 2. Reducers
 
 Reducers specify how the application's state changes in response to actions sent to the store. Remember that actions only describe what happened, but don't describe how the application's state changes.
 
@@ -40,7 +40,7 @@ function todoReducer(state = [], action) {
 }
 ```
 
-## 3. Store
+### 3. Store
 
 The store brings actions and reducers together. It holds the application state, allows access to the state via `getState()`, allows state to be updated via `dispatch(action)`, and registers listeners via `subscribe(listener)`.
 
@@ -49,7 +49,7 @@ import { createStore } from 'redux';
 let store = createStore(todoReducer);
 ```
 
-## 4. Dispatching Actions
+### 4. Dispatching Actions
 
 Dispatching an action is the process of sending out an action to trigger a state change. 
 
@@ -57,7 +57,7 @@ Dispatching an action is the process of sending out an action to trigger a state
 store.dispatch(addTodo('Learn Redux'));
 ```
 
-## 5. Subscribing to the Store
+### 5. Subscribing to the Store
 
 You can subscribe to the store to get notified of state changes.
 
@@ -65,7 +65,7 @@ You can subscribe to the store to get notified of state changes.
 store.subscribe(() => console.log(store.getState()));
 ```
 
-## 6. Combining Multiple Reducers
+### 6. Combining Multiple Reducers
 
 When your app grows, you'll want to split your reducing function into separate functions, each managing independent parts of the state.
 
@@ -80,7 +80,7 @@ const rootReducer = combineReducers({
 let store = createStore(rootReducer);
 ```
 
-## 7. Async Actions with Redux Thunk
+### 7. Async Actions with Redux Thunk
 
 Redux Thunk middleware allows you to write action creators that return a function instead of an action.
 

@@ -1,212 +1,149 @@
 ## Redux Toolkit
 
-This cheat sheet provides a foundational overview of Redux Toolkit. It includes setting up your store, creating slices for managing state, and handling asynchronous actions. Redux Toolkit simplifies Redux development by reducing boilerplate and enforcing best practices.
+Redux Toolkit (RTK) is a toolset for efficient Redux development. It simplifies the store setup, reduces boilerplate code, and integrates best practices by default. This cheat sheet covers the essential concepts and APIs provided by Redux Toolkit.
 
-### Step 1: Setup
+### Setup
 
-Assuming you have `create-react-app` installed, start by creating a new React application and installing necessary dependencies:
+To start using Redux Toolkit, install it alongside React-Redux if you're using it with React:
 
 ```bash
-npx create-react-app redux-toolkit-example
-cd redux-toolkit-example
 npm install @reduxjs/toolkit react-redux
 ```
 
-### Step 2: Configure the Store
+### 1. `configureStore()`
 
-Create a `store.js` file under `src/app` to configure your Redux store.
+Simplifies store setup with sensible defaults. Automatically sets up the store with good defaults, such as Redux DevTools extension and thunk middleware.
+
+#### Usage:
 
 ```javascript
-// src/app/store.js
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
-import userReducer from '../features/user/userSlice';
+import rootReducer from './reducers';
 
-export const store = configureStore({
-  reducer: {
-    counter: counterReducer,
-    user: userReducer,
-  },
+const store = configureStore({
+  reducer: rootReducer,
 });
 ```
 
-### Step 3: Setup the Counter Feature
+### 2. `createReducer()`
 
-Create a counter slice with increment, decrement, and incrementByAmount actions.
+Simplifies reducer creation with modern JavaScript capabilities, allowing for a more readable syntax without the switch statement.
+
+#### Usage:
 
 ```javascript
-// src/features/counter/counterSlice.js
+import { createReducer } from '@reduxjs/toolkit';
+
+const initialState = { value: 0 };
+
+const counterReducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase('counter/incremented', (state, action) => {
+      state.value += 1;
+    })
+    .addCase('counter/decremented', (state, action) => {
+      state.value -= 1;
+    });
+});
+```
+
+### 3. `createAction()`
+
+Automatically generates action creator functions for the given action type string.
+
+#### Usage:
+
+```javascript
+import { createAction } from '@reduxjs/toolkit';
+
+export const incremented = createAction('counter/incremented');
+// Usage: dispatch(incremented());
+```
+
+### 4. `createSlice()`
+
+Automates the process of writing action creators and reducers. A "slice" is a collection of Redux reducer logic and actions for a single feature in your app.
+
+#### Usage:
+
+```javascript
 import { createSlice } from '@reduxjs/toolkit';
 
-export const counterSlice = createSlice({
+const counterSlice = createSlice({
   name: 'counter',
-  initialState: {
-    value: 0,
-  },
+  initialState: { value: 0 },
   reducers: {
-    increment: state => {
+    incremented: (state) => {
       state.value += 1;
     },
-    decrement: state => {
+    decremented: (state) => {
       state.value -= 1;
-    },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload;
     },
   },
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export const { incremented, decremented } = counterSlice.actions;
 export default counterSlice.reducer;
 ```
 
-### Step 4: Setup the User Feature
+### 5. `createAsyncThunk()`
 
-Create a user slice to fetch user data asynchronously.
+Standardizes the handling of asynchronous actions in your Redux store.
+
+#### Usage:
 
 ```javascript
-// src/features/user/userSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchUserData = createAsyncThunk(
-  'user/fetchUserData',
+export const fetchUserById = createAsyncThunk(
+  'users/fetchById',
   async (userId, thunkAPI) => {
-    const response = await fetch(`https://api.example.com/user/${userId}`);
+    const response = await fetch(`https://api.example.com/users/${userId}`);
     return await response.json();
   }
 );
+```
 
-const userSlice = createSlice({
-  name: 'user',
-  initialState: {
-    entities: null,
-    loading: 'idle',
-  },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchUserData.pending, (state) => {
-        state.loading = 'pending';
-      })
-      .addCase(fetchUserData.fulfilled, (state, action) => {
-        state.loading = 'idle';
-        state.entities = action.payload;
-      })
-      .addCase(fetchUserData.rejected, (state) => {
-        state.loading = 'idle';
-        state.entities = null;
-      });
+### 6. `createEntityAdapter()`
+
+Generates a set of reusable reducers and selectors for managing normalized state.
+
+#### Usage:
+
+```javascript
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+
+const usersAdapter = createEntityAdapter();
+
+const initialState = usersAdapter.getInitialState();
+
+const usersSlice = createSlice({
+  name: 'users',
+  initialState,
+  reducers: {
+    // Reducer logic
   },
 });
 
-export default userSlice.reducer;
+export default usersSlice.reducer;
 ```
 
-### Step 5: Setup Provider in the App Entry Point
+### 7. `createSelector()`
 
-Use the `Provider` component to pass the Redux store to your React application.
+Re-export of Reselect's `createSelector` function for creating memoized selectors.
+
+#### Usage:
 
 ```javascript
-// src/index.js
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import { Provider } from 'react-redux';
-import { store } from './app/store';
+import { createSelector } from '@reduxjs/toolkit';
 
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
+const selectUserIds = (state) => state.users.ids;
+const selectUserEntities = (state) => state.users.entities;
+
+const selectAllUsers = createSelector(
+  [selectUserIds, selectUserEntities],
+  (ids, entities) => ids.map((id) => entities[id])
 );
 ```
 
-### Step 6: Create Counter Component
-
-Implement a Counter component to display and control the counter's state.
-
-```javascript
-// src/features/counter/Counter.js
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { increment, decrement, incrementByAmount } from './counterSlice';
-
-export function Counter() {
-  const count = useSelector((state) => state.counter.value);
-  const dispatch = useDispatch();
-
-  return (
-    <div>
-      <h2>Counter</h2>
-      <div>
-        <button onClick={() => dispatch(decrement())}>-</button>
-        <span>{count}</span>
-        <button onClick={() => dispatch(increment())}>+</button>
-        <button onClick={() => dispatch(incrementByAmount(5))}>Increment by 5</button>
-      </div>
-    </div>
-  );
-}
-```
-
-### Step 7: Create a User Component to Display User Data
-
-Implement a component to display user data and trigger data fetching.
-
-```javascript
-// src/features/user/User.js
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchUserData } from './userSlice';
-
-export function User({ userId }) {
-  const user = useSelector((state) => state.user.entities);
-  const loading = useSelector((state) => state.user.loading);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchUserData(userId));
-  }, [dispatch, userId]);
-
-  if (loading === 'pending') return <p>Loading...</p>;
-
-  return (
-    <div>
-      {user ? (
-        <div>
-          <h3>{user.name}</h3>
-          <p>Email: {user.email}</p>
-        </div>
-      ) : (
-        <p>No user data</p>
-      )}
-    </div>
-  );
-}
-```
-
-### Step 8: Integrate Components in App
-
-Finally, integrate your components into the `App.js`.
-
-```javascript
-// src/App.js
-import React from 'react';
-import { Counter } from './features/counter/Counter';
-import { User } from './features/user/User';
-
-function App() {
-  return (
-    <div className="App">
-      <Counter />
-      <User userId="1" /> {/* Assuming "1" is a valid user ID */}
-    </div>
-  );
-}
-
-export default App;
-```
-
-This example demonstrates the essentials of using Redux Toolkit in a React application, covering state management, dispatching actions, and handling asynchronous requests.
+Redux Toolkit streamlines Redux development, enforcing best practices, reducing boilerplate, and making your Redux code more maintainable.

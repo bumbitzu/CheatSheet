@@ -6,8 +6,8 @@ function openCloseNav()
 
   if (sidebar.style.width === "0px" || sidebar.style.width === "")
   {
-    sidebar.style.width = "350px";
-    mainContent.style.marginLeft = "350px";
+    sidebar.style.width = "400px";
+    mainContent.style.marginLeft = "400px";
     openBtn.innerText = `☰ Hide Menu`;
   } else
   {

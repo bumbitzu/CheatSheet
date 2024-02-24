@@ -4,11 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="index.css" />
-  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.24.1/themes/prism-tomorrow.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism-tomorrow.min.css" integrity="sha512-kSwGoyIkfz4+hMo5jkJngSByil9jxJPKbweYec/UgS+S1EgE45qm4Gea7Ks2oxQ7qiYyyZRn66A9df2lMtjIsw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
   <title>Cheatsheet Univers</title>
 </head>
 <body onload="render()">
@@ -57,6 +55,8 @@
         <li onclick="render('backend/PASSPORT.JS-LOCAL-AUTHENTICATION.md'); clicked(this)">Passport Local Authentication</li>
         <li onclick="render('backend/BCRYPT-WITH-EXPRESS.md'); clicked(this)">Bcrypt</li>
         <li onclick="render('backend/OAUTH-IN-EXPRESS.md'); clicked(this)">OAuth 2.0 in Express</li>
+        <li onclick="render('backend/CREATE-MANIPULATE-DATABASE-SQL.md'); clicked(this)">Create and Manipulate Database in SQL</li>
+        
       </ul>
 
   </nav>
@@ -66,7 +66,10 @@
     <div id="markdownContent"></div>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.1/prism.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js" integrity="sha512-UOoJElONeUNzQbbKQbjldDf9MwOHqxNz49NNJJ1d90yp+X9edsHyJoAs6O4K19CZGaIdjI5ohK+O2y5lBTW6uQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/components/prism-sql.js" integrity="sha512-+sdjgJH+O/w+lVoUkOtSU8P8rfSv213B8n4eUN4Yruti3FzgVvmyLWvvLNiuZcHYF/6SOcRrxsETBv5F3mPKkA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/components/prism-jsx.min.js" integrity="sha512-02Ybjxfrp2RGVCd29o1Didkx6lAD2yQRW4vOqCzpEWsqfRay1FhN6G4FFPSGu6ER01RAWjLPVraD9tixC5Sbow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="index.js"></script>
 </body>
 </html>

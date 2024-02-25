@@ -2,6 +2,7 @@ function openCloseNav()
 {
   const openBtn = document.getElementById('openbtn');
   const sidebar = document.getElementById("mySidebar");
+  const inputContainer = document.getElementById('input-container')
   const mainContent = document.getElementById("main");
 
   if (sidebar.style.width === "0px" || sidebar.style.width === "")
@@ -9,11 +10,17 @@ function openCloseNav()
     sidebar.style.width = "400px";
     mainContent.style.marginLeft = "400px";
     openBtn.innerText = `☰ Hide Menu`;
+    
+    setTimeout(() =>
+    {
+      inputContainer.style.position = 'fixed';
+    },400)
   } else
   {
     sidebar.style.width = "0px";
     mainContent.style.marginLeft = "0px";
     openBtn.innerText = `☰ Show Menu`;
+    inputContainer.style.position = '';
   }
 
 }

@@ -95,7 +95,7 @@ h1{
   
   margin: 0 auto;
   position: relative;
-  width: 350px;
+  width: 320px;
   padding-right: 0.75rem;
   padding-left: 3rem;
   padding-bottom: 1.0rem;
@@ -120,7 +120,8 @@ h1{
   font-size: 20px;
 }
 .input-container {
-  position: relative;
+
+  
   display: inline-block;
 }
 
@@ -170,6 +171,10 @@ th {
 .tag{
 
   display: none;
+}
+#myMenu{
+  position: relative;
+  top: 50px;
 }
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {

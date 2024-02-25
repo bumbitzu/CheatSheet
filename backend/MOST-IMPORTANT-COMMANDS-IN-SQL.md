@@ -1,8 +1,8 @@
-# The Most Important SQL Commands
+## The Most Important SQL Commands
 
 SQL commands are instructions used to communicate with a database to perform tasks, operations, and queries. Here is a concise overview of the most crucial SQL commands categorized by their purpose:
 
-## Data Definition Language (DDL)
+### Data Definition Language (DDL)
 
 - **CREATE DATABASE**: Creates a new database.
   ```sql
@@ -34,7 +34,7 @@ SQL commands are instructions used to communicate with a database to perform tas
   CREATE INDEX index_name ON table_name (column_name);
   ```
 
-## Data Manipulation Language (DML)
+### Data Manipulation Language (DML)
 
 - **SELECT**: Retrieves data from a database.
   ```sql
@@ -53,7 +53,7 @@ SQL commands are instructions used to communicate with a database to perform tas
   DELETE FROM table_name WHERE condition;
   ```
 
-## Data Control Language (DCL)
+### Data Control Language (DCL)
 
 - **GRANT**: Gives users access privileges to the database.
   ```sql
@@ -64,7 +64,7 @@ SQL commands are instructions used to communicate with a database to perform tas
   REVOKE privilege_name ON database_name.table_name FROM 'username'@'host';
   ```
 
-## Transaction Control Language (TCL)
+### Transaction Control Language (TCL)
 
 - **COMMIT**: Commits a transaction, making all changes permanent.
   ```sql

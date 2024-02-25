@@ -1,4 +1,4 @@
-## Express Middleware Cheat Sheet
+## Express Middleware
 
 Express middleware are functions that execute during the lifecycle of a request to the Express server. These functions can access the request object (`req`), the response object (`res`), and the next middleware function in the application’s request-response cycle. Middleware can perform a wide range of tasks: from logging, parsing request bodies, to configuring CORS. This cheat sheet outlines how to use and create middleware in an Express.js application.
 

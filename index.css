@@ -176,6 +176,13 @@ th {
   position: relative;
   top: 50px;
 }
+
+code{
+  background-color: #2d2d2d;
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+}
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
   .sidebar {padding-top: 15px;}
